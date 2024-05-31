@@ -1,0 +1,175 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - My Diary</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('{% static "images/register.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto 1em;
+            width: 100px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 1em;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 1em;
+        }
+
+        label {
+            margin-bottom: 0.5em;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-control {
+            padding: 0.75em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+
+        .form-control.invalid {
+            border-color: red;
+        }
+
+        .form-control.valid {
+            border-color: green;
+        }
+
+        .form-text {
+            color: #777;
+            font-size: 0.9em;
+            margin-top: 0.5em;
+        }
+
+        .btn {
+            padding: 0.75em 1.5em;
+            color: #fff;
+            background-color: #007BFF;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .links {
+            margin-top: 1em;
+            text-align: center;
+        }
+
+        .links a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="{% static 'images/diary_logo.png' %}" alt="My Diary Logo" class="logo">
+        <h1>Register for My Diary</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                <div class="form-text">{{ form.username.help_text }}</div>
+            </div>
+            <div class="form-group">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+            </div>
+            <div class="form-group">
+                <label for="id_password1">Password:</label>
+                <input type="password" name="password1" id="id_password1" class="form-control">
+                <div class="form-text">Your password must contain at least 8 characters, including letters and numbers, and cannot be entirely numeric.</div>
+            </div>
+            <div class="form-group">
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+            </div>
+            <button type="submit" class="btn">Register</button>
+        </form>
+        <div class="links">
+            <a href="{% url 'login' %}">Already have an account? Login</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordField = document.getElementById('id_password1');
+
+            passwordField.addEventListener('input', function() {
+                const password = passwordField.value;
+                let valid = true;
+
+                if (password.length < 8) {
+                    valid = false;
+                }
+                if (!/[A-Za-z]/.test(password)) {
+                    valid = false;
+                }
+                if (!/[0-9]/.test(password)) {
+                    valid = false;
+                }
+                if (/^\d+$/.test(password)) {
+                    valid = false;
+                }
+
+                if (valid) {
+                    passwordField.classList.remove('invalid');
+                    passwordField.classList.add('valid');
+                } else {
+                    passwordField.classList.remove('valid');
+                    passwordField.classList.add('invalid');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

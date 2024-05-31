@@ -1,0 +1,399 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Diary</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9fc;
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 40px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 10px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-family: 'Cursive', sans-serif;
+            font-size: 1.5rem;
+            color: #e58b69;
+        }
+
+        .navbar-brand img {
+            margin-right: 10px;
+            width: 40px;
+            height: 40px;
+        }
+
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-nav .nav-item {
+            margin: 0 15px;
+        }
+
+        .navbar-nav .nav-link {
+            text-decoration: none;
+            color: #e58b69;
+            font-weight: bold;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ded5ce;
+        }
+
+        .content {
+            padding: 1rem;
+            flex-grow: 1;
+            margin-top: 50px; /* Adjust for fixed navbar */
+        }
+
+        .container-flex {
+            display: flex;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            background-color: #e58b69;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #ded5ce;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .form-container h3 {
+            margin-bottom: 20px;
+            color: #e58b69;
+        }
+
+        .form-container .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-container input[type="text"],
+        .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: #f7f9fc;
+        }
+
+        .form-container textarea {
+            resize: vertical;
+        }
+
+        .form-container .btn-primary {
+            background-color: #e58b69;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container .btn-primary:hover {
+            background-color: #ded5ce;
+        }
+
+        .list-group-item {
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+
+        .list-group-item a {
+            color: #e58b69;
+            text-decoration: none;
+        }
+
+        .list-group-item a:hover {
+            text-decoration: underline;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #e58b69;
+            color: white;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+        .sidebar {
+            height: 100vh;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            margin-top: 50px; /* Adjust for fixed navbar */
+            background-image: url('{% static "images/register.png" %}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .search-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            background-color: #e58b69;
+            border: none;
+            border-radius: 20px;
+            margin-top: 5px;
+            width: calc(100% - 22px);
+            box-sizing: border-box;
+        }
+
+        .search-button:hover {
+            background-color: #ded5ce;
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-container .form-control {
+            flex: 1;
+            margin-right: 10px;
+            width: 200px;
+        }
+
+        .search-container .search-button {
+            flex-shrink: 7;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a class="navbar-brand" href="{% url 'index' %}">
+            <img src="{% static 'images/diary_logo.png' %}" alt="My Diary Logo">
+            My Diary
+        </a>
+
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container-flex">
+        <div class="sidebar">
+            <button class="button" onclick="showCreateEntryForm()">Create Entry</button>
+            <h3>History</h3>
+            <div class="search-container">
+                <input type="text" id="search-query" class="form-control" placeholder="Search entries">
+                <button class="search-button" onclick="searchEntries()">Search</button>
+            </div>
+
+            <ul class="list-group" id="entry-history">
+                {% for entry in entries %}
+                    <li class="list-group-item">
+                        <a href="{% url 'view_entry' entry.id %}">{{ entry.title }}</a>
+                        <small class="text-muted">{{ entry.created_at }}</small>
+                    </li>
+                {% endfor %}
+            </ul>
+            <button class="button" onclick="toggleSupportForm()">Support</button>
+            <button class="button" onclick="toggleReplies()">Replies</button>
+        </div>
+        <div class="content">
+            <h2>Hi {{ user.username }}</h2>
+            <p>Welcome back to your diary!</p>
+
+            <div id="create-entry-form" class="form-container hidden">
+                <h3>Create a New Entry</h3>
+                <form id="new-entry-form">
+                    <div class="form-group">
+                        <label for="entry-title">Title</label>
+                        <input type="text" class="form-control" id="entry-title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="entry-content">Content</label>
+                        <textarea class="form-control" id="entry-content" name="content" rows="10" required></textarea>
+                    </div>
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                    <button type="submit" class="btn btn-primary">Save Entry</button>
+                </form>
+            </div>
+
+            <div id="support-form" class="form-container hidden">
+                <h3>Support</h3>
+                <form id="support-message-form">
+                    <div class="form-group">
+                        <label for="support-message">Message</label>
+                        <textarea class="form-control" id="support-message" name="message" rows="5" required></textarea>
+                    </div>
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
+
+            <div id="replies" class="hidden">
+                <h3>Replies</h3>
+                {% for message in support_messages %}
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Sent on: {{ message.created_at }}
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text"><strong>Your message:</strong> {{ message.message }}</p>
+                            <p class="card-text"><strong>Admin reply:</strong> {{ message.reply }}</p>
+                            <p class="card-text"><small class="text-muted">Replied on: {{ message.replied_at }}</small></p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showCreateEntryForm() {
+            document.getElementById('create-entry-form').classList.toggle('hidden');
+        }
+
+        document.getElementById('new-entry-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const title = document.getElementById('entry-title').value;
+            const content = document.getElementById('entry-content').value;
+            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+            fetch("{% url 'create_entry' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify({
+                    title: title,
+                    content: content,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error creating entry.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        function toggleSupportForm() {
+            document.getElementById('support-form').classList.toggle('hidden');
+        }
+
+        function toggleReplies() {
+            document.getElementById('replies').classList.toggle('hidden');
+        }
+
+        function searchEntries() {
+            const query = document.getElementById('search-query').value.toLowerCase();
+            const entries = document.querySelectorAll('#entry-history .list-group-item');
+
+            entries.forEach(entry => {
+                const title = entry.querySelector('a').innerText.toLowerCase();
+                if (title.includes(query)) {
+                    entry.style.display = '';
+                } else {
+                    entry.style.display = 'none';
+                }
+            });
+        }
+
+        document.getElementById('support-message-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const message = document.getElementById('support-message').value;
+            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+            fetch("{% url 'send_support_message' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify({
+                    message: message,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Support message sent successfully.');
+                    document.getElementById('support-message').value = '';
+                    toggleSupportForm();
+                } else {
+                    alert('Error sending support message.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
